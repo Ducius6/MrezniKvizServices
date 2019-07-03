@@ -71,28 +71,6 @@ public class UserController {
             return new ResponseEntity<Object>(body, HttpStatus.NOT_FOUND);
         }
 
-        try {
-            // TODO change this to point to place where service account data is stored
-            FileInputStream serviceAccount =
-                    new FileInputStream("C:/Users/dujed/AndroidStudioProjects/Mreznikviz/mrezni-kviz-firebase-adminsdk-ykkx5-de6fe21a1a.json");
-
-            FirebaseOptions options = new FirebaseOptions.Builder()
-                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                    .setDatabaseUrl("https://mrezni-kviz.firebaseio.com")
-                    .build();
-
-
-            FirebaseApp.initializeApp(options);
-            System.out.println("napravia stream");
-
-        }
-        catch (Exception exc) {
-            Map<String, Object> body = new LinkedHashMap<>();
-            body.put("timestamp", new Date());
-            body.put("status", HttpStatus.NOT_FOUND);
-            body.put("errors", exc.getMessage());
-            return new ResponseEntity<Object>(body, HttpStatus.BAD_REQUEST);
-        }
 
         // This registration token comes from the client FCM SDKs
         com.google.firebase.messaging.Message message = Message.builder()
