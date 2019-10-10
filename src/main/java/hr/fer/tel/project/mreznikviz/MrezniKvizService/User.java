@@ -23,7 +23,7 @@ public class User implements Serializable {
     @NotNull(message = "score is mandatory")
     private Long score;
 
-    public User(Long id, String firstName, String userName, String email, String password, Long score){
+    public User(Long id, String firstName, String userName, String email, String password, Long score) {
         this.id = id;
         this.firstName = firstName;
         this.userName = userName;
@@ -32,9 +32,8 @@ public class User implements Serializable {
         this.score = score;
     }
 
-    public User(){ }
-
-
+    public User() {
+    }
 
 
     public String getPassword() {
@@ -57,6 +56,7 @@ public class User implements Serializable {
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }

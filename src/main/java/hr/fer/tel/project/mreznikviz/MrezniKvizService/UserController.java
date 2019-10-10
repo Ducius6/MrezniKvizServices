@@ -1,8 +1,5 @@
 package hr.fer.tel.project.mreznikviz.MrezniKvizService;
 
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
@@ -13,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.FileInputStream;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -25,14 +21,14 @@ public class UserController {
     IUserService userService;
 
     @GetMapping("/users")
-    public List<User> findUsers(@ModelAttribute(value="from") int from, @ModelAttribute(value="size") int size) {
-        Page<User> pages = userService.findAll(from,size);
+    public List<User> findUsers(@ModelAttribute(value = "from") int from, @ModelAttribute(value = "size") int size) {
+        Page<User> pages = userService.findAll(from, size);
         List<User> list = pages.getContent();
         return list;
     }
 
     @PatchMapping(path = "/users")
-    public ResponseEntity<Object> updateUserScore(@ModelAttribute(value = "score") Long score,  @ModelAttribute (value = "userName") String userName){
+    public ResponseEntity<Object> updateUserScore(@ModelAttribute(value = "score") Long score, @ModelAttribute(value = "userName") String userName) {
         int promjena = userService.updateScore(score, userName);
         return new ResponseEntity<Object>(HttpStatus.OK);
 
@@ -61,7 +57,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/users/sendpushmessage")
-    public ResponseEntity<Object> sendPushMessage(@RequestParam(name="token") String token, @RequestParam(name="quizId") String quizId) {
+    public ResponseEntity<Object> sendPushMessage(@RequestParam(name = "token") String token, @RequestParam(name = "quizId") String quizId) {
         System.out.println(token.toString());
         if (token.isEmpty()) {
             Map<String, Object> body = new LinkedHashMap<>();
@@ -85,15 +81,13 @@ public class UserController {
         try {
             String response = FirebaseMessaging.getInstance().send(message);
             System.out.println("Successfully sent message: " + response);
-        }
-        catch (FirebaseMessagingException fme) {
+        } catch (FirebaseMessagingException fme) {
             Map<String, Object> body = new LinkedHashMap<>();
             body.put("timestamp", new Date());
             body.put("status", HttpStatus.NOT_FOUND);
             body.put("errors", fme.getMessage());
             return new ResponseEntity<Object>(body, HttpStatus.BAD_REQUEST);
         }
-
 
 
         return new ResponseEntity<Object>(HttpStatus.OK);
